@@ -1,0 +1,164 @@
+/** board class. */
+class board {
+   static board instance; // 
+   static int white, black, space, wall;
+   static array banmen;
+   field array raw, column;
+   field int i;
+   field int x1, y1, j, margin, marginx, width;
+
+   /*  */
+   constructor board new() {
+      let white = 0;
+      let black = 1;
+      let space = 2;
+      let wall = 3;
+      let banmen = Array.new(100);
+      let i = 0;
+      while(i < 100){
+         let banmen[i] = wall;
+         let i = i + 1;
+      }
+      let i = 1;
+      let j = 1;
+      while(j < 9){
+         while(i < 9){
+            let banmen[i + (j*10)] = space;
+            let i = i + 1;
+         }
+         let j = j + 1;
+         let i = 1;
+      }
+      let banmen[44] = white;
+      let banmen[45] = black;
+      let banmen[54] = black;
+      let banmen[55] = white;
+      do Screen.clearScreen();
+      do Screen.setColor(true);
+      return this;
+   }
+   
+   /** Creates an instance of board, and stores it. */
+   function void newInstance() {
+      let instance = board.new();
+      return;
+   }
+
+   /** Returns the single instance of this Pong game. */
+   function board getInstance() {
+      return instance;
+   }
+ 
+   /*  */
+   method void init() {
+      let marginx = 24*7;
+      let margin = 24;
+      let x1 = marginx;
+      let y1 = margin;
+      let i = 0;
+      let j = 0;
+      let width = 24;
+      do Screen.clearScreen();
+      do Screen.setColor(true);
+      while(i < 9){
+         do Screen.drawLine(x1, margin, x1, margin + (width*8));
+         do Screen.drawLine(marginx, y1, marginx + (width*8), y1);
+         let i = i + 1;
+         let x1 = x1 + width;
+         let y1 = y1 + width;
+      }
+      return;
+   }
+   /*  */
+   method void draw() {
+      let margin = 24;
+      let width = 24;
+      let i = 0;
+      while(i < 100){
+         if(banmen[i] = 1){
+            do Screen.drawCircle((i-(10*(i/10)))*width + (-width/2) + marginx, (i/10)*width + (width/2), 10);
+         }
+         if(banmen[i] = 0){
+            do Screen.drawCircle((i-(10*(i/10)))*width + (-width/2) + marginx, (i/10)*width + (width/2), 10);
+            do Screen.setColor(false);
+            do Screen.drawCircle((i-(10*(i/10)))*width + (-width/2) + marginx, (i/10)*width + (width/2), 9);
+            do Screen.setColor(true);
+         }
+         let i = i + 1;
+      }
+      return;
+   }
+
+   function boolean flip(int x, int y, boolean color, int dir){
+      var int k, index;
+      let index = x+(y*10);
+      let k = 1;
+      if(color){
+         while((banmen[index + (k*dir)] = white)){
+            let k = k + 1;
+            if(banmen[index + (k*dir)] = black){
+               while(k > 0){
+                  let banmen[index + (k*dir)] = black;
+                  let k = k-1;
+               }
+               return true;
+            }
+            if((banmen[index + (k*dir)] = space)|(banmen[index + (k*dir)] = wall)){
+               return false;
+            }
+         }
+      }else{
+         while((banmen[index + (k*dir)] = black)){
+            let k = k + 1;
+            if(banmen[index + (k*dir)] = white){
+               while(k > 0){
+                  let banmen[index + (k*dir)] = white;
+                  let k = k-1;
+               }
+               return true;
+            }
+            if((banmen[index + (k*dir)] = space)|(banmen[index + (k*dir)] = wall)){
+               return false;
+            }
+         }
+      } 
+      return false;
+   }
+
+   method int stone_num(int color){
+      var int num;
+      let num = 0;
+      let i = 0;
+      while(i < 100){
+         if(banmen[i]=color){
+            let num = num + 1;
+         }
+         let i = i + 1;
+      }
+      return num;
+   }
+
+   method booleamn reverse(int x, int y, boolean color){
+      var boolean flag;
+      let flag = false;
+      if(~(banmen[(x+(y*10))]=space)){
+         return flag;
+      }
+      let flag = (flag | board.flip(x, y, color, -11));
+      let flag = (flag | board.flip(x, y, color, -10));
+      let flag = (flag | board.flip(x, y, color, -9));
+      let flag = (flag | board.flip(x, y, color, -1));
+      let flag = (flag | board.flip(x, y, color, 1));
+      let flag = (flag | board.flip(x, y, color, 9));
+      let flag = (flag | board.flip(x, y, color, 10));
+      let flag = (flag | board.flip(x, y, color, 11));
+      if(flag){
+         if(color){
+            let banmen[(x+(y*10))] = black;
+         }else{
+            let banmen[(x+(y*10))] = white;
+         }
+      }
+      return flag;
+   }
+}

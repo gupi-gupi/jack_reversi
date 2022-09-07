@@ -1,0 +1,87 @@
+/** Hello World program. */
+class game {
+   static game instance;
+   static boolen continue, teban;
+   field int a;
+
+   method void run(){
+      var board ban;
+      var boolean flag;
+      var Array ax;
+      var int num_black, num_white;
+//        do board.newInstance();
+        //let game = board.getInstance();
+      let continue = true;
+      let teban = true;
+      let ax = Array.new(2);
+      let ban = board.new();
+      do ban.init();
+      do ban.draw();
+      while(continue){
+         do Output.println();
+         if(teban){
+            do Output.printString("black");
+         }else{
+            do Output.printString("white");
+         }
+         do Output.println();
+         let ax[0] = Keyboard.readInt("Input X");
+         let ax[1] = Keyboard.readInt("Input Y");         
+         //let ax = game.answer();
+         if(ax[1] = 20){
+            let continue = false;
+         }
+         if(ax[1] = 30){
+            if(teban){
+               let teban = false; 
+            }else{
+               let teban = true;
+            }
+         }
+         if(ax[1] = 40){
+            do ban.init();
+            do ban.draw();
+         }
+         let flag = ban.reverse(ax[0], ax[1], teban);
+         if(flag){
+            do Output.printString("update");
+            do ban.draw();
+            if(teban){
+               let teban = false; 
+            }else{
+               let teban = true;
+            }
+         }
+      }
+      let num_black = ban.stone_num(1);
+      let num_white= ban.stone_num(0);
+      do ban.init();
+      do ban.draw();
+      do Output.printString("black : ");
+      do Output.printInt(num_black);
+      do output.println();
+      do Output.printString("white : ");
+      do Output.printInt(num_white);
+      do output.println();
+      return;
+   }
+
+   constructor game new() {
+	   do Screen.clearScreen();
+	   do Output.printString("Start");
+      return this;
+    }
+
+   function void newInstance() {
+      let instance = game.new();
+      return;
+    }
+
+   function Array answer(){
+      var Array ans;
+      let ans = Array.new(2);
+      let ans[0] = Keyboard.readInt("Input X");
+      let ans[1] = Keyboard.readInt("Input Y");
+      return ans;
+   }
+}

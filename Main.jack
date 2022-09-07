@@ -1,0 +1,17 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/11/Pong/Main.jack
+
+/**
+ * 
+ */
+class Main {
+    /**tarts running it. */
+    function void main() {
+      var game play;
+      let play = game.newInstance();
+      do play.run();
+      return;
+    }
+}
